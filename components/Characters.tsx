@@ -26,7 +26,7 @@ export const Characters = ({ characters }: Props) => {
   return (
     <div className={styles.grid}>
       {characters.map(person => (
-        <div key={person.name} className={styles.card}>
+        <div key={person.id} className={styles.card}>
           <h3>{person.name}</h3>
           <Image src={person.image} width={300} height={300} />
 
