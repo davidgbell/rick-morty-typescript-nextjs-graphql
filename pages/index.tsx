@@ -18,8 +18,8 @@ type Props = {
 };
 
 const MORE_PRODUCTS_QUERY = gql`
-  query {
-    characters(page: $pageNumber) {
+  query ($nextPage: Int) {
+    characters(page: $nextPage) {
       info {
         count
         pages
@@ -48,27 +48,22 @@ const MORE_PRODUCTS_QUERY = gql`
   }
 `;
 
-export default function Home({
-  charactersData,
-  pages,
-  count,
-  next,
-  prev,
-}: Props) {
+export default function Home({ charactersData }: Props) {
   const initialState = charactersData;
-  const [characters, setCharacters] = useState(initialState);
+  const [characters, setCharacters] = useState<any>(initialState);
   const [term, setTerm] = useState('');
   const [nextPage, setNextPage] = useState(2);
 
-  const { data, loading, error } = useQuery(MORE_PRODUCTS_QUERY, {
+  const { data, error } = useQuery(MORE_PRODUCTS_QUERY, {
     variables: {
-      page: nextPage,
+      nextPage: nextPage,
     },
   });
 
-  console.log(data);
-
-  console.log('pages', pages, 'count', count, 'next', next, 'prev', prev);
+  const moreCharacters = () => {
+    setCharacters([...characters, ...data.characters.results]);
+    setNextPage(nextPage + 1);
+  };
 
   const submitSearch = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -93,6 +88,7 @@ export default function Home({
     setTerm(event.target.value);
   };
 
+  if (error) return <h1>Error</h1>;
   return (
     <Layout title='home'>
       <h1>Rick and Morty</h1>
@@ -105,6 +101,7 @@ export default function Home({
       {characters && characters.length > 0 && (
         <Characters characters={characters} />
       )}
+      <button onClick={moreCharacters}>MORE</button>
     </Layout>
   );
 }
