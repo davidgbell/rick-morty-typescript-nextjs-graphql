@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 type SubmitSearchProps = {
-  submitSearch: React.FormEvent<HTMLFormElement>;
-  searchInputChange: React.ChangeEvent;
+  submitSearch: (event: React.FormEvent<HTMLFormElement>) => void;
+  searchInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   term: string;
 };
 
