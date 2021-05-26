@@ -1,10 +1,11 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import styles from '../styles/Home.module.css';
 
 type PersonProps = {
   name: string;
-  id: string;
+  id: number;
   species: string;
   image: string;
   origin: {
@@ -33,6 +34,9 @@ export const Characters = ({ characters }: Props) => {
           <div>
             <p>Origin: {person.origin.name}</p>
             <p>Location: {person.location.name}</p>
+          </div>
+          <div>
+            <Link href={`/character/${person.id}`}>More</Link>
           </div>
         </div>
       ))}
